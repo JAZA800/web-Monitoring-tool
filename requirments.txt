@@ -1,0 +1,7 @@
+fastapi
+unicorn[standard]
+requests
+prometheus-client
+pymongo
+pytest
+flake8
