@@ -1,7 +1,8 @@
 fastapi
-unicorn[standard]
+uvicorn[standard]
 requests
 prometheus-client
 pymongo
 pytest
 flake8
+httpx

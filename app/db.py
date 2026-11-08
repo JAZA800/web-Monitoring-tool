@@ -1,4 +1,4 @@
-from pymongo import DESCENDING, MonMongoClient
+from pymongo import DESCENDING, MongoClient
 from app import config
 
 _client = MongoClient(config.MONGO_URI, serverSelectionTimeoutMS=5000)

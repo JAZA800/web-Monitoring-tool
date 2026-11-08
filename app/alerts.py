@@ -1,5 +1,6 @@
 import smtplib
 from email.message import EmailMessage
+
 from app import config
 
 _last_state: dict[str, bool] = {}
@@ -7,23 +8,27 @@ _last_state: dict[str, bool] = {}
 
 def send_email(subject: str, body: str):
     if not (config.SMTP_USER and config.SMTP_PASSWORD and config.ALERT_EMAIL_TO):
-        print(f"[ALERT - email not configured]{subject}:{body}")
+        print(f"[ALERT - email not configured] {subject}: {body}")
         return
+
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = config.SMTP_USER
     msg["To"] = config.ALERT_EMAIL_TO
     msg.set_content(body)
+
     try:
         with smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT, timeout=10) as server:
-            server.starttls
-        server.login(config.SMTP_USER, config.SMTP_PASSWORD)
-        server.send_message(msg)
-    except (smtplib.SMPTException, OSError) as exc:
-        print(f"Failed to ssent email:{exc}")
+            server.starttls()
+            server.login(config.SMTP_USER, config.SMTP_PASSWORD)
+            server.send_message(msg)
+        print(f"Alert email sent: {subject}")
+    except (smtplib.SMTPException, OSError) as exc:
+        print(f"Failed to send email: {exc}")
 
 
 def notify_if_changed(result: dict):
+    """Alert only when a site changes state (up->down or down->up)."""
     url, is_up = result["url"], result["is_up"]
     previous = _last_state.get(url)
     _last_state[url] = is_up
