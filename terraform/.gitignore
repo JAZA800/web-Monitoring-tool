@@ -1,0 +1,6 @@
+monitor_key
+*.pem
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
