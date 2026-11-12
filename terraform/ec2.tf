@@ -14,13 +14,7 @@ resource "aws_security_group" "my_security_group" {
   vpc_id      = aws_default_vpc.default.id
 
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "SSH open"
-  }
+
   ingress {
     from_port   = 22
     to_port     = 22
